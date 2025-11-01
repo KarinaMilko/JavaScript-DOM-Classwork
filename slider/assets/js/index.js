@@ -17,137 +17,40 @@ const slides = [
   },
 ];
 
-// let currentSlideIndex = 0;
-
-// //
-// const sliderImg = document.querySelector(".sliderImg");
-
-// sliderImg.src = slides[currentSlideIndex].src;
-// sliderImg.alt = slides[currentSlideIndex].alt;
-
-// //
-// const [prevBtn, nextBtn] = document.querySelectorAll("button");
-
-// nextBtn.onclick = () => {
-//   if (currentSlideIndex < slides.length - 1) {
-//     currentSlideIndex++;
-//   } else {
-//     currentSlideIndex = 0;
-//   }
-
-//   console.log(currentSlideIndex);
-
-//   sliderImg.src = slides[currentSlideIndex].src;
-//   sliderImg.alt = slides[currentSlideIndex].alt;
-// };
-
-// prevBtn.onclick = () => {
-//   if (currentSlideIndex > 0) {
-//     currentSlideIndex--;
-//   } else {
-//     currentSlideIndex = slides.length - 1;
-//   }
-
-//   sliderImg.src = slides[currentSlideIndex].src;
-//   sliderImg.alt = slides[currentSlideIndex].alt;
-// };
-
-let currentSlideIndex = 0;
-
-//встановити як початкове нульове зображення
-// const sliderImg = document.querySelector(".sliderImg");
-
-updateSlider(currentSlideIndex);
-
-// при натисканні на next відобразити наступне зображення
-const [prevBtn, nextBtn] = document.querySelectorAll("button");
-
-nextBtn.onclick = () => {
-  currentSlideIndex = (currentSlideIndex - 1 + slides.length) % slides.length;
-
-  updateSlider(currentSlideIndex);
-};
-
-// при натисканні на prev відобразити попереднє зображення
-prevBtn.onclick = () => {
-  currentSlideIndex = (currentSlideIndex + 1) % slides.length;
-
-  updateSlider(currentSlideIndex);
-};
-
-function updateSlider(currentIndex) {
-  sliderImg.src = slides[currentIndex].src;
-  sliderImg.alt = slides[currentIndex].alt;
-}
-
 // MVVM -- Model - View - ViewModel (MVC, MVP)
+
 // ViewModel
 const sliderImg = document.querySelector(".sliderImg");
-
 const [prevBtn, nextBtn] = document.querySelectorAll("button");
 
-function updateSlider(currentIndex) {
-  sliderImg.src = slides[currentIndex].src;
-  sliderImg.alt = slides[currentIndex].alt;
+sliderImg.onerror = () => sliderError();
+
+try {
+  const slider = new Slider(slides, 0);
+  updateSlider(slider.currentSlide);
+
+  // 'prev', 'next'
+  function changeSlideHandler(direction = "next") {
+    return () => {
+      slider[direction === "prev" ? "decIndex" : "incIndex"]();
+      updateSlider(slider.currentSlide);
+    };
+  }
+
+  prevBtn.onclick = changeSlideHandler("prev");
+  nextBtn.onclick = changeSlideHandler("next");
+} catch (err) {
+  sliderError();
 }
 
-// try {
-//   const slider = new Slider(slides, 1);
-//   prevBtn.onclick = () => {
-//     slider.decIndex();
-//     updateSlider(slider.currentIndex);
-//   };
-//   nextBtn.onclick = () => {
-//     slider.incIndex();
-//     updateSlider(slider.currentIndex);
-//   };
-// } catch (err) {
-//   sliderImg.src =
-//     "https://cdn.vectorstock.com/i/500p/65/30/default-image-icon-missing-picture-page-vector-40546530.jpg";
-//   sliderImg.alt = "unavailable image";
-// }
+function updateSlider(currentSlide) {
+  sliderImg.src = currentSlide.src;
+  sliderImg.alt = currentSlide.alt;
+}
 
 function sliderError() {
   sliderImg.src =
     "https://cdn.vectorstock.com/i/500p/65/30/default-image-icon-missing-picture-page-vector-40546530.jpg";
   sliderImg.alt = "unavailable image";
 }
-
-sliderImg.onerror = () => {
-  sliderError();
-};
-
-try {
-  const slider = new Slider(slides, 0);
-  updateSlider(slider.currentIndex);
-
-  //   prevBtn.onclick = () => {
-  //     slider.decIndex();
-  //     updateSlider(slider.currentIndex);
-  //   };
-  //   nextBtn.onclick = () => {
-  //     slider.incIndex();
-  //     updateSlider(slider.currentIndex);
-  //   };
-
-  // 'prev', 'next'
-  function changeSlideHandler(direction = "next") {
-    return () => {
-      slider[direction === "prev" ? "decIndex" : "incIndex"]();
-      updateSlider(slider.currentIndex);
-    };
-  }
-
-  prevBtn.onclick = changeSlideHandler("prev");
-  nextBtn.onclick = changeSlideHandler("next");
-
-  //   prevBtn.onclick = () => {
-  //     const direction = "prev";
-  //     slider[direction === "prev" ? "decIndex" : "incIndex"]();
-  //     updateSlider(slider.currentIndex);
-  //   };
-} catch (err) {
-  sliderError();
-}
-
 console.log("after error");

@@ -40,4 +40,8 @@ class Slider {
 
     this.currentIndex = (currentIndex + 1) % length;
   }
+
+  get currentSlide() {
+    return slides[this.currentIndex];
+  }
 }
