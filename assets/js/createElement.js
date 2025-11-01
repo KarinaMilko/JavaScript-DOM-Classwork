@@ -42,9 +42,7 @@
 //   return newElement;
 // }
 
-///////////////////////////////////////////////////////////////////
-
-// const USERS_URL = "https://randomuser.me/api/?results=5";
+// =============userCard===============
 const USERS_URL = `https://randomuser.me/api/?results=5&seed=2024`;
 
 const rootEl = document.querySelector("#root");
@@ -68,11 +66,6 @@ nextBtn.onclick = () => {
 // у кожного користувача відображати
 // зображення профілю, ім'я, вік
 // передбачити можливість видалення користувача зі списку
-
-// fetch(USERS_URL)
-//   .then((response) => response.json())
-//   .then(({ results }) => genSingleUser(results[0]))
-//   .catch((err) => console.log("err :>> ", err));
 
 function loadUsers(currentPage) {
   rootEl.textContent = "";
@@ -98,21 +91,6 @@ function genSingleUser({
 
   // додати img (створити, задати клас, src з imgSrc,
   //             alt - конкатенація first, last )
-  // const imgEl = document.createElement("img");
-  // imgEl.classList.add("userImg");
-  // imgEl.src = imgSrc;
-  // imgEl.alt = `${first} ${last}`;
-  // userCard.appendChild(imgEl);
-
-  // const userName = document.createElement("h2");
-  // userName.classList.add("userName");
-  // userName.textContent = `${first} ${last}`;
-  // userCard.append(userName);
-
-  // const userAge = document.createElement("p");
-  // userAge.classList.add("userAge");
-  // userAge.textContent = age;
-  // userCard.append(userAge);
 
   const imgEl = createNewImg(imgSrc, `${first} ${last}`, "userImg");
   const userName = createNewElement("h2", `${first} ${last}`, "userName");
@@ -121,7 +99,6 @@ function genSingleUser({
   const trashIcon = document.createElement("button");
   trashIcon.classList.add("trashIcon");
   trashIcon.innerHTML = `<i class="fa-solid fa-trash"></i>`;
-  // userCard.append(trashIcon);
 
   trashIcon.onclick = function () {
     this.parentElement.remove();
